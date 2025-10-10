@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://gughanguguu_db_user:KFwZEqVZDiUgBFFo@gughan.d2rt5zd.mongodb.net/?retryWrites=true&w=majority&appName=Gughan
+      - JWT_SECRET=your-dev-secret-key-change-in-production
+      - WATSON_ML_API_URL=https://watson-ml.example.com/v1/predictions
+      - WATSON_ML_API_KEY=your-watson-api-key
+    depends_on:
+      - mongo
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  mongo-data:
+  mongo-config:
+
+networks:
+  app-network:
+    driver: bridge
