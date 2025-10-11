@@ -1,5 +1,5 @@
 const Log = require('../models/Logs');
-const Pdu = require('../models/pdu');
+const Pdu = require('../models/Pdu');
 const Chiller = require('../models/Chiller');
 
 exports.getCurrentMetrics = async () => {
